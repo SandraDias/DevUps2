@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_devups2" default="compile.module.devups2">
+  <dirname property="module.devups2.basedir" file="${ant.file.module_devups2}"/>
+  
+  <property name="module.jdk.home.devups2" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.devups2" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.devups2" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.devups2" value="-encoding UTF-8 -source 7 -target 7 ${compiler.args}"/>
+  
+  <property name="devups2.output.dir" value="${module.devups2.basedir}/out/production/DevUps2"/>
+  <property name="devups2.testoutput.dir" value="${module.devups2.basedir}/out/test/DevUps2"/>
+  
+  <path id="devups2.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="devups2.module.production.classpath">
+    <path refid="${module.jdk.classpath.devups2}"/>
+    <path refid="library.simplegraphics.classpath"/>
+  </path>
+  
+  <path id="devups2.runtime.production.module.classpath">
+    <pathelement location="${devups2.output.dir}"/>
+    <path refid="library.simplegraphics.classpath"/>
+  </path>
+  
+  <path id="devups2.module.classpath">
+    <path refid="${module.jdk.classpath.devups2}"/>
+    <pathelement location="${devups2.output.dir}"/>
+    <path refid="library.simplegraphics.classpath"/>
+  </path>
+  
+  <path id="devups2.runtime.module.classpath">
+    <pathelement location="${devups2.testoutput.dir}"/>
+    <pathelement location="${devups2.output.dir}"/>
+    <path refid="library.simplegraphics.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.devups2">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.devups2">
+    <patternset refid="excluded.from.module.devups2"/>
+  </patternset>
+  
+  <path id="devups2.module.sourcepath">
+    <dirset dir="${module.devups2.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.devups2" depends="compile.module.devups2.production,compile.module.devups2.tests" description="Compile module DevUps2"/>
+  
+  <target name="compile.module.devups2.production" depends="register.custom.compilers" description="Compile module DevUps2; production classes">
+    <mkdir dir="${devups2.output.dir}"/>
+    <javac2 destdir="${devups2.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.devups2}/javac">
+      <compilerarg line="${compiler.args.devups2}"/>
+      <bootclasspath refid="devups2.module.bootclasspath"/>
+      <classpath refid="devups2.module.production.classpath"/>
+      <src refid="devups2.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.devups2"/>
+    </javac2>
+    
+    <copy todir="${devups2.output.dir}">
+      <fileset dir="${module.devups2.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.devups2.tests" depends="register.custom.compilers,compile.module.devups2.production" description="compile module DevUps2; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.devups2" description="cleanup module">
+    <delete dir="${devups2.output.dir}"/>
+    <delete dir="${devups2.testoutput.dir}"/>
+  </target>
+</project>
