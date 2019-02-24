@@ -59,18 +59,21 @@ public class Game  {
             for (Alien ast: linkedList) {
                 ast.left();
                 if(player.getCol() == ast.getCol() && player.getRow() == ast.getRow()){
+
+                    if(player.getLife() <= 0){
+                    player.setOutOfLives(true);
+                    continue;
+                }
                     ast.getAlien().delete();
                    Picture fire = new Picture(10+ast.getCol()*40,10+ast.getRow()*40, "resources/fire.png");
                     fire.draw();
                     Thread.sleep(150);
                     fire.delete();
                     System.out.println((player.getLife()) + "-1 life");
-                    if(player.getLife() <= 0){
-                        player.setOutOfLives(true);
-                        continue;
-                    }
+
                     player.checkCollision(linkedList);
                 }
+
                 if (ast.getCol() == -1) {
                     ast.getAlien().delete();
                 }

@@ -77,6 +77,13 @@ public class Player extends Cell {
 
         for (Alien ast : alienLinkedList) {
             if (this.currentRow == ast.getRow() && checkCol == ast.getCol()) {
+                life = life - 1;
+                if (life == 1) {
+                    lifePicture3.delete();
+                }
+                if (life == 0) {
+                    lifePicture2.delete();
+                }
                 ast.deleteAlien();
                 Picture fire = new Picture(10 + ast.getCol() * 40, 10 + ast.getRow() * 40, "resources/fire.png");
                 fire.draw();
@@ -86,13 +93,7 @@ public class Player extends Cell {
                     e.printStackTrace();
                 }
                 fire.delete();
-                life = life - 1;
-                if (life == 1) {
-                    lifePicture3.delete();
-                }
-                if (life == 0) {
-                    lifePicture2.delete();
-                }
+
 
             }
 
@@ -137,7 +138,14 @@ public class Player extends Cell {
         currentRow = super.getRow();
 
         for (Alien ast : alienLinkedList) {
-            if (this.currentRow == ast.getRow() && currentCol + 1 == ast.getCol() - 1 || this.currentRow  == ast.getRow() && currentCol + 1 == ast.getCol()) {
+            if (this.currentRow == ast.getRow() && currentCol == ast.getCol() || this.currentRow  == ast.getRow() && currentCol + 1 == ast.getCol()) {
+                life = life - 1;
+                if (life == 1){
+                    lifePicture3.delete();
+                }
+                if (life == 0){
+                    lifePicture2.delete();
+                }
                 ast.deleteAlien();
                 Picture fire = new Picture(10+ast.getCol()*40,10+ast.getRow()*40, "resources/fire.png");
                 fire.draw();
@@ -147,13 +155,7 @@ public class Player extends Cell {
                     e.printStackTrace();
                 }
                 fire.delete();
-                life = life - 1;
-                if (life == 1){
-                    lifePicture3.delete();
-                }
-                if (life == 0){
-                    lifePicture2.delete();
-                }
+
 
                 return;
             }
