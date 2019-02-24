@@ -4,16 +4,16 @@ import org.academiadecodigo.bootcamp.DevOops.Grid;
 
 import java.util.LinkedList;
 
-public class AsteroidsFactory {
+public class AlienFactory {
 
 
-    private static LinkedList<Asteroids> ld;
+    private static LinkedList<Alien> alienLinkedList;
 
-    public static Asteroids getNewAst(Grid grid) {
+    public static Alien getNewAst(Grid grid) {
         int randRow = grid.randAstPosRow();
         int lastRow = randRow;
         int randCol = grid.randAstPosCol();
-        for (Asteroids aste : ld) {
+        for (Alien aste : alienLinkedList) {
             while (lastRow == aste.getRow()) {
                 randRow = grid.randAstPosRow();
                 lastRow = randRow;
@@ -22,21 +22,21 @@ public class AsteroidsFactory {
 
         }
 
-        Asteroids ast = new Asteroids(randRow, randCol, Aliens.pickAlien());
+        Alien ast = new Alien(randRow, randCol, DiferentAliens.pickAlien());
         ast.paint();
         return ast;
     }
 
 
-    public static LinkedList<Asteroids> getAllAst(Grid grid, int enemiesPerRow) {
-        ld = new LinkedList();
+    public static LinkedList<Alien> getAllAst(Grid grid, int enemiesPerRow) {
+        alienLinkedList = new LinkedList();
 
         for (int i = 0; i < enemiesPerRow; i++) {
-            ld.add(AsteroidsFactory.getNewAst(grid));
+            alienLinkedList.add(AlienFactory.getNewAst(grid));
         }
 
 
-        return ld;
+        return alienLinkedList;
 
 
     }

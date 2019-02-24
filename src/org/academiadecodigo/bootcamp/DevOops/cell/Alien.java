@@ -3,11 +3,12 @@ package org.academiadecodigo.bootcamp.DevOops.cell;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
 
-public class Asteroids extends Cell {
+public class Alien extends Cell {
+
 
     private Picture alien;
 
-    public Asteroids(int row, int col, String picturePath) {
+    public Alien(int row, int col, String picturePath) {
         super(row, col);
         alien = new Picture(PADDING+col*CELL_SIZE,PADDING + row * CELL_SIZE, picturePath);
         alien.draw();

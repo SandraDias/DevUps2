@@ -1,6 +1,6 @@
 package org.academiadecodigo.bootcamp.DevOops.cell;
 
-public enum Aliens {
+public enum DiferentAliens {
     ALIEN1("resources/alien1.png"),
     ALIEN2("resources/alien2.png"),
     ALIEN3("resources/alien3.png"),
@@ -8,12 +8,12 @@ public enum Aliens {
 
     private String name;
 
-    Aliens(String name) {
+    DiferentAliens(String name) {
         this.name = name;
     }
 
     public static String pickAlien() {
         int number = (int) (Math.random() * 4);
-        return Aliens.values()[number].name;
+        return DiferentAliens.values()[number].name;
     }
 }

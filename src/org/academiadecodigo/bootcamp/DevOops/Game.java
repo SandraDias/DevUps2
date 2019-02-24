@@ -1,9 +1,9 @@
 package org.academiadecodigo.bootcamp.DevOops;
 
-import org.academiadecodigo.bootcamp.DevOops.cell.Asteroids;
-import org.academiadecodigo.bootcamp.DevOops.cell.AsteroidsFactory;
+import org.academiadecodigo.bootcamp.DevOops.cell.AlienFactory;
+import org.academiadecodigo.bootcamp.DevOops.cell.Alien;
 import org.academiadecodigo.bootcamp.DevOops.cell.Cell;
-import org.academiadecodigo.bootcamp.DevOops.cell.Painter;
+import org.academiadecodigo.bootcamp.DevOops.cell.Player;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
 
 import java.util.LinkedList;
@@ -12,47 +12,52 @@ import java.util.LinkedList;
 public class Game {
 
     private Grid grid;
-    private Painter painter;
-    private Painter painter2;
-    private LinkedList<Asteroids> linkedList;
+    private Player player;
+    private Player painter2;
+    private LinkedList<Alien> linkedList;
     private int counter = 5;
     private int life = 2;
     private boolean isDead = false;
-    private PlayerBar pb;
+    private PlayerBar playerBar;
     private int enemiesPerRow;
     private Picture endScreen;
+    private Picture startScreen;
+
 
 
     public Game(int rows, int cols,int enemiesPerRow) {
+
         linkedList = new LinkedList<>();
         grid = new Grid(rows, cols);
-        painter = new Painter(5,life);
-        pb = new PlayerBar(rows,cols);
+        player = new Player(5,life);
+        playerBar = new PlayerBar(rows,cols);
         this.enemiesPerRow = enemiesPerRow;
+        startScreen=new Picture(Cell.PADDING, Cell.PADDING, "start.jpg");
+        startScreen.draw();
     }
 
 
     public void start() throws InterruptedException {
-        while(!painter.isOutOfLives()){
+        while(!player.isOutOfLives()){
 
             Thread.sleep(100);
             if(counter++ == 5) {
-                //linkedList.add(AsteroidsFactory.getNewAst(grid));
-                linkedList.addAll(AsteroidsFactory.getAllAst(grid,enemiesPerRow));
+                //linkedList.add(AlienFactory.getNewAst(grid));
+                linkedList.addAll(AlienFactory.getAllAst(grid,enemiesPerRow));
 
                 counter = 0;
             }
 
-            for (Asteroids ast: linkedList) {
+            for (Alien ast: linkedList) {
                 ast.left();
-                if(painter.getCol() == ast.getCol() && painter.getRow() == ast.getRow()){
+                if(player.getCol() == ast.getCol() && player.getRow() == ast.getRow()){
                     ast.rec().delete();
-                    System.out.println((painter.getLife()) + "-1 life");
-                    if(painter.getLife() == 0){
-                        painter.setOutOfLives(true);
+                    System.out.println((player.getLife()) + "-1 life");
+                    if(player.getLife() == 0){
+                        player.setOutOfLives(true);
                         continue;
                     }
-                    painter.checkCollision(linkedList);
+                    player.checkCollision(linkedList);
                 }
                 if (ast.getCol() == -1) {
                     ast.rec().delete();
@@ -66,7 +71,7 @@ public class Game {
 
     public void paint() {
 
-        Cell cell = grid.getCell(painter.getRow(), painter.getCol());
+        Cell cell = grid.getCell(player.getRow(), player.getCol());
 
         if (!cell.isPainted()) {
             cell.paint();
@@ -78,36 +83,37 @@ public class Game {
 
     }
 
+
     public void moveUp() {
-        if(!painter.isOutOfLives()) {
-            if (painter.getRow() != 1) {
-                painter.up(linkedList);
+        if(!player.isOutOfLives()) {
+            if (player.getRow() != 1) {
+                player.up(linkedList);
             }
         }
 
     }
 
     public void moveLeft() {
-        if (!painter.isOutOfLives()) {
-            if (painter.getCol() != 1) {
-                painter.left(linkedList);
+        if (!player.isOutOfLives()) {
+            if (player.getCol() != 1) {
+                player.left(linkedList);
             }
         }
     }
 
     public void moveRight() {
-        if(!painter.isOutOfLives()) {
+        if(!player.isOutOfLives()) {
 
-            if (painter.getCol() != grid.getCols() - 2) {
-                painter.right();
+            if (player.getCol() != grid.getCols() - 2) {
+                player.right();
             }
         }
     }
 
     public void moveDown() {
-        if(!painter.isOutOfLives()) {
-            if (painter.getRow() != grid.getRows() - 2) {
-                painter.down(linkedList);
+        if(!player.isOutOfLives()) {
+            if (player.getRow() != grid.getRows() - 1) {
+                player.down(linkedList);
             }
         }
     }

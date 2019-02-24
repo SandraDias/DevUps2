@@ -62,7 +62,7 @@ public class KeyboardInput implements KeyboardHandler {
             game.moveDown();
         }
         if (keyboardEvent.getKey() == KeyboardEvent.KEY_SPACE) {
-            game.paint();
+           // game.paint();
         }
 
 

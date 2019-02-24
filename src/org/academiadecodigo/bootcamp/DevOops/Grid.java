@@ -46,7 +46,7 @@ public class Grid {
     }
 
     public int randAstPosCol(){
-        return this.getCols() - 2;
+        return this.getCols()-1;
 
     }
 
