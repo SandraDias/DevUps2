@@ -83,6 +83,8 @@ public class Game  {
         }
         endScreen = new Picture(Cell.PADDING ,Cell.PADDING,"resources/gameover1.jpg");
         endScreen.draw();
+        Thread.sleep(2500);
+        System.exit(0);
     }
 
 

@@ -3,26 +3,26 @@
 
     </description>
 
-    <property name="src" location="../src" />
-    <property name="build" location="" />
+    <property name="src" location="src" />
+    <property name="build" location="build" />
     <property name="dist" location="dist" />
     <property name="version" value="1.0" />
-    <property name="resource" location="../resources"/>
-    <property name="lib" location="../lib"/>
+    <property name="resource" location="resources"/>
+    <property name="lib" location="lib"/>
 
     <target name="init">
 
         <tstamp />
 
-        <mkdir dir="/build" />
+        <mkdir dir="${build}" />
     </target>
 
     <target name="compile" depends="init" description="compile the source">
 
 
-        <javac srcdir="${src}" destdir="/build">
+        <javac srcdir="${src}" destdir="${build}">
             <classpath>
-                <pathelement path="../lib/simplegraphics.jar"/>
+                <pathelement path="lib/simplegraphics.jar"/>
             </classpath>
         </javac>
     </target>
@@ -32,9 +32,9 @@
 
         <mkdir dir="${dist}/lib" />
 
-        <jar destfile="${dist}/lib/DevUps2-${version}.${build.number}.jar" basedir="/build">
-            <zipgroupfileset dir="../lib" includes="simplegraphics.jar" />
-            <fileset dir="/resources"/>
+        <jar destfile="${dist}/lib/DevUps2-${version}.${build.number}.jar" basedir="${build}">
+            <zipgroupfileset dir="lib" includes="simplegraphics.jar" />
+            <fileset dir="${resource}"/>
             <manifest>
                 <attribute name="DependencyFinder" value="main"/>
                 <attribute name="Main-Class" value="org.academiadecodigo.bootcamp.Main"/>
@@ -44,7 +44,7 @@
 
     <target name="clean" description="clean up">
 
-        <delete dir="/build" />
+        <delete dir="${build}" />
         <delete dir="${dist}" />
     </target>
 </project>
