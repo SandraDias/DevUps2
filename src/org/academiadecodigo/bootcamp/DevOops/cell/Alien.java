@@ -7,18 +7,24 @@ public class Alien extends Cell {
 
 
     private Picture alien;
+    private Picture fire;
 
     public Alien(int row, int col, String picturePath) {
         super(row, col);
         alien = new Picture(PADDING+col*CELL_SIZE,PADDING + row * CELL_SIZE, picturePath);
         alien.draw();
+        fire = new Picture(PADDING+col*CELL_SIZE,PADDING + row * CELL_SIZE, "resources/fire.png");
 
     }
 
-    public Rectangle rec() {
-        return super.getRectangle();
+
+    public Picture getAlien() {
+        return alien;
     }
 
+    public Picture getFire() {
+        return fire;
+    }
 
     public void left() {
         super.setCol(getCol() - 1);

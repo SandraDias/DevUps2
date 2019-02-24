@@ -12,7 +12,7 @@ public class Grid {
     private Cell[][] cells;
 
     public Grid(int rows, int cols) {
-        Picture pic = new Picture(Cell.PADDING, Cell.PADDING, "Mars.jpg");
+        Picture pic = new Picture(Cell.PADDING, Cell.PADDING, "resources/Mars.jpg");
         pic.draw();
         this.rows = rows;
         this.cols = cols;

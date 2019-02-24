@@ -9,7 +9,9 @@ public class Main {
 
         KeyboardInput k = new KeyboardInput(g1);
 
-        //g1.start();
+
+        g1.start();
+
 
     }
 }

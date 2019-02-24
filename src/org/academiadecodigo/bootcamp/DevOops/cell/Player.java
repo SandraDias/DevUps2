@@ -22,15 +22,15 @@ public class Player extends Cell {
     public Player(int row, int life) {
         super(row, 1);
         super.getRectangle();
-        picturePlayer1 = new Picture(PADDING + CELL_SIZE, PADDING + row * CELL_SIZE, "aust1.png");
+        picturePlayer1 = new Picture(PADDING + CELL_SIZE, PADDING + row * CELL_SIZE, "resources/aust1.png");
         picturePlayer1.draw();
 
         this.life = life;
-        this.lifePicture1= new Picture(Cell.PADDING,Cell.PADDING, "life.png");
+        this.lifePicture1= new Picture(Cell.PADDING,Cell.PADDING, "resources/life.png");
         lifePicture1.draw();
-        this.lifePicture2= new Picture(Cell.PADDING+ Cell.CELL_SIZE,Cell.PADDING, "life.png");
+        this.lifePicture2= new Picture(Cell.PADDING+ Cell.CELL_SIZE,Cell.PADDING, "resources/life.png");
         lifePicture2.draw();
-        this.lifePicture3= new Picture(Cell.PADDING+(2*Cell.CELL_SIZE),Cell.PADDING, "life.png");
+        this.lifePicture3= new Picture(Cell.PADDING+(2*Cell.CELL_SIZE),Cell.PADDING, "resources/life.png");
         lifePicture3.draw();
 
 
@@ -40,35 +40,96 @@ public class Player extends Cell {
 
 
     public void up(LinkedList<Alien> alienLinkedList) {
-
+        //checkCollisionRow(alienLinkedList,-1);
         super.setRow(getRow() - 1);
         picturePlayer1.translate(0, -getCELL_SIZE());
     }
 
-    public void right() {
-
+    public void right(LinkedList<Alien> alienLinkedList) {
+    checkCollisionCol(alienLinkedList,+1);
         super.setCol(getCol() + 1);
         picturePlayer1.translate(getCELL_SIZE(), 0);
     }
 
-    public void left(LinkedList<Alien> ldl) {
-
+    public void left(LinkedList<Alien> alienLinkedList) {
+        checkCollisionCol(alienLinkedList,-1);
         super.setCol(getCol() - 1);
         picturePlayer1.translate(-getCELL_SIZE(), 0);
-        checkCollision(ldl);
 
 
     }
 
     public void down(LinkedList<Alien> alienLinkedList) {
-
+        //checkCollisionRow(alienLinkedList,+1);
         super.setRow(getRow() + 1);
         picturePlayer1.translate(0, getCELL_SIZE());
 
 
     }
 
-    // proxima do ast == ultima do player && proxima player == ultimate do ast
+    public void checkCollisionCol(LinkedList<Alien> alienLinkedList,int LeftOrRight){
+
+        currentCol = super.getCol();
+        currentRow = super.getRow();
+        int nextCol = super.getCol()+LeftOrRight;
+        int checkCol;
+        checkCol = nextCol;
+
+        for (Alien ast : alienLinkedList) {
+            if (this.currentRow == ast.getRow() && checkCol == ast.getCol()) {
+                ast.deleteAlien();
+                Picture fire = new Picture(10 + ast.getCol() * 40, 10 + ast.getRow() * 40, "resources/fire.png");
+                fire.draw();
+                try {
+                    Thread.sleep(150);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                fire.delete();
+                life = life - 1;
+                if (life == 1) {
+                    lifePicture3.delete();
+                }
+                if (life == 0) {
+                    lifePicture2.delete();
+                }
+
+            }
+
+        }
+    }
+
+   /* public void checkCollisionRow(LinkedList<Alien> alienLinkedList,int UPorDown){
+        currentCol = super.getCol();
+        currentRow = super.getRow();
+        int nextRow = super.getRow()+UPorDown;
+        int checkRow;
+        checkRow = nextRow;
+
+        for (Alien ast : alienLinkedList) {
+            if (checkRow == ast.getRow() && currentCol == ast.getCol()) {
+                ast.deleteAlien();
+                Picture fire = new Picture(10 + ast.getCol() * 40, 10 + ast.getRow() * 40, "resources/fire.png");
+                fire.draw();
+                try {
+                    Thread.sleep(150);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                fire.delete();
+                life = life - 1;
+                if (life == 1) {
+                    lifePicture3.delete();
+                }
+                if (life == 0) {
+                    lifePicture2.delete();
+                }
+
+            }
+
+        }
+    }*/
+
 
     public void checkCollision(LinkedList<Alien> alienLinkedList) {
 
@@ -76,9 +137,16 @@ public class Player extends Cell {
         currentRow = super.getRow();
 
         for (Alien ast : alienLinkedList) {
-            if (this.currentRow == ast.getRow() && currentCol + 1 == ast.getCol() - 1 || this.currentRow+1  == ast.getRow() && currentCol + 1 == ast.getCol() - 1) {
-                // ast.rec().delete();
+            if (this.currentRow == ast.getRow() && currentCol + 1 == ast.getCol() - 1 || this.currentRow  == ast.getRow() && currentCol + 1 == ast.getCol()) {
                 ast.deleteAlien();
+                Picture fire = new Picture(10+ast.getCol()*40,10+ast.getRow()*40, "resources/fire.png");
+                fire.draw();
+                try {
+                    Thread.sleep(150);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                fire.delete();
                 life = life - 1;
                 if (life == 1){
                     lifePicture3.delete();
@@ -89,9 +157,16 @@ public class Player extends Cell {
 
                 return;
             }
-            if (this.currentRow == ast.getRow() && currentCol == ast.getCol() || this.currentRow+1 == ast.getRow() && currentCol == ast.getCol() ) {
-                //ast.rec().delete();
+            /*if (this.currentRow == ast.getRow() && currentCol == ast.getCol()) {
                 ast.deleteAlien();
+                Picture fire = new Picture(10+ast.getCol()*40,10+ast.getRow()*40, "resources/fire.png");
+                fire.draw();
+                try {
+                    Thread.sleep(150);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                fire.delete();
                 life = life - 1;
                 if (life == 1){
                     lifePicture3.delete();
@@ -100,7 +175,7 @@ public class Player extends Cell {
                     lifePicture2.delete();
                 }
                 return;
-            }
+            }*/
         }
     }
 

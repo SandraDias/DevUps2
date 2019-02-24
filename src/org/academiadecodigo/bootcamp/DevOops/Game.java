@@ -4,12 +4,15 @@ import org.academiadecodigo.bootcamp.DevOops.cell.AlienFactory;
 import org.academiadecodigo.bootcamp.DevOops.cell.Alien;
 import org.academiadecodigo.bootcamp.DevOops.cell.Cell;
 import org.academiadecodigo.bootcamp.DevOops.cell.Player;
+import org.academiadecodigo.simplegraphics.keyboard.Keyboard;
+import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
+import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
 
 import java.util.LinkedList;
 
 
-public class Game {
+public class Game  {
 
     private Grid grid;
     private Player player;
@@ -22,49 +25,60 @@ public class Game {
     private int enemiesPerRow;
     private Picture endScreen;
     private Picture startScreen;
+    private boolean gameStart = false;
 
 
 
     public Game(int rows, int cols,int enemiesPerRow) {
-
+        startScreen=new Picture(Cell.PADDING, Cell.PADDING, "resources/start.jpg");
         linkedList = new LinkedList<>();
         grid = new Grid(rows, cols);
         player = new Player(5,life);
         playerBar = new PlayerBar(rows,cols);
         this.enemiesPerRow = enemiesPerRow;
-        startScreen=new Picture(Cell.PADDING, Cell.PADDING, "start.jpg");
         startScreen.draw();
     }
 
 
+
     public void start() throws InterruptedException {
+
         while(!player.isOutOfLives()){
 
-            Thread.sleep(100);
-            if(counter++ == 5) {
-                //linkedList.add(AlienFactory.getNewAst(grid));
-                linkedList.addAll(AlienFactory.getAllAst(grid,enemiesPerRow));
+            Thread.sleep(200);
+            if(gameStart) {
+                startScreen.delete();
+                if (counter++ == 5) {
+                    //linkedList.add(AlienFactory.getNewAst(grid));
+                    linkedList.addAll(AlienFactory.getAllAst(grid, enemiesPerRow));
 
-                counter = 0;
+                    counter = 0;
+                }
             }
 
             for (Alien ast: linkedList) {
                 ast.left();
                 if(player.getCol() == ast.getCol() && player.getRow() == ast.getRow()){
-                    ast.rec().delete();
+                    ast.getAlien().delete();
+                   Picture fire = new Picture(10+ast.getCol()*40,10+ast.getRow()*40, "resources/fire.png");
+                    fire.draw();
+                    Thread.sleep(150);
+                    fire.delete();
                     System.out.println((player.getLife()) + "-1 life");
-                    if(player.getLife() == 0){
+                    if(player.getLife() <= 0){
                         player.setOutOfLives(true);
                         continue;
                     }
                     player.checkCollision(linkedList);
                 }
                 if (ast.getCol() == -1) {
-                    ast.rec().delete();
+                    ast.getAlien().delete();
                 }
+                ast.getFire().delete();
             }
+
         }
-        endScreen = new Picture(Cell.PADDING ,Cell.PADDING,"gameover1.jpg");
+        endScreen = new Picture(Cell.PADDING ,Cell.PADDING,"resources/gameover1.jpg");
         endScreen.draw();
     }
 
@@ -105,7 +119,7 @@ public class Game {
         if(!player.isOutOfLives()) {
 
             if (player.getCol() != grid.getCols() - 2) {
-                player.right();
+                player.right(linkedList);
             }
         }
     }
@@ -119,9 +133,8 @@ public class Game {
     }
 
 
-    public void skills() throws Exception{
-
-
+    public void setGameStart(boolean gameStart) {
+        this.gameStart = gameStart;
     }
 
 }
