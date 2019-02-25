@@ -9,6 +9,7 @@ import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
 
+import java.io.IOException;
 import java.util.LinkedList;
 
 
@@ -18,7 +19,7 @@ public class Game  {
     private Player player;
     private Player painter2;
     private LinkedList<Alien> linkedList;
-    private int counter = 5;
+    private int counter = 3;
     private int life = 2;
     private boolean isDead = false;
     private PlayerBar playerBar;
@@ -26,11 +27,12 @@ public class Game  {
     private Picture endScreen;
     private Picture startScreen;
     private boolean gameStart = false;
+    private SoundPlayer soundPlayer;
 
 
 
     public Game(int rows, int cols,int enemiesPerRow) {
-        startScreen=new Picture(Cell.PADDING, Cell.PADDING, "resources/start.jpg");
+        startScreen=new Picture(Cell.PADDING, Cell.PADDING, "start.jpg");
         linkedList = new LinkedList<>();
         grid = new Grid(rows, cols);
         player = new Player(5,life);
@@ -41,14 +43,14 @@ public class Game  {
 
 
 
-    public void start() throws InterruptedException {
+    public void start() throws InterruptedException, IOException {
 
         while(!player.isOutOfLives()){
 
-            Thread.sleep(200);
+            Thread.sleep(50);
             if(gameStart) {
                 startScreen.delete();
-                if (counter++ == 5) {
+                if (counter++ == 3) {
                     //linkedList.add(AlienFactory.getNewAst(grid));
                     linkedList.addAll(AlienFactory.getAllAst(grid, enemiesPerRow));
 
@@ -58,20 +60,23 @@ public class Game  {
 
             for (Alien ast: linkedList) {
                 ast.left();
+                soundPlayer = new SoundPlayer();
                 if(player.getCol() == ast.getCol() && player.getRow() == ast.getRow()){
-
                     if(player.getLife() <= 0){
                     player.setOutOfLives(true);
                     continue;
                 }
-                    ast.getAlien().delete();
-                   Picture fire = new Picture(10+ast.getCol()*40,10+ast.getRow()*40, "resources/fire.png");
-                    fire.draw();
-                    Thread.sleep(150);
-                    fire.delete();
-                    System.out.println((player.getLife()) + "-1 life");
 
-                    player.checkCollision(linkedList);
+                        ast.getAlien().delete();
+                        Picture fire = new Picture(10+ast.getCol()*40,10+ast.getRow()*40, "fire.png");
+                        fire.draw();
+                        soundPlayer.explosion();
+                        Thread.sleep(150);
+                        fire.delete();
+                        System.out.println((player.getLife()) + "-1 life");
+
+                        player.checkCollision(linkedList);
+
                 }
 
                 if (ast.getCol() == -1) {
@@ -79,28 +84,16 @@ public class Game  {
                 }
                 ast.getFire().delete();
             }
-
+            player.setPlayerHit(false);
         }
-        endScreen = new Picture(Cell.PADDING ,Cell.PADDING,"resources/gameover1.jpg");
+        endScreen = new Picture(Cell.PADDING ,Cell.PADDING,"gameover1.jpg");
+        soundPlayer.explosion();
         endScreen.draw();
         Thread.sleep(2500);
         System.exit(0);
     }
 
 
-    public void paint() {
-
-        Cell cell = grid.getCell(player.getRow(), player.getCol());
-
-        if (!cell.isPainted()) {
-            cell.paint();
-            return;
-        }
-
-        cell.unpaint();
-
-
-    }
 
 
     public void moveUp() {
@@ -136,6 +129,10 @@ public class Game  {
             }
         }
     }
+
+
+
+
 
 
     public void setGameStart(boolean gameStart) {

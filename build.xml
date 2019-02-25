@@ -37,7 +37,7 @@
             <fileset dir="${resource}"/>
             <manifest>
                 <attribute name="DependencyFinder" value="main"/>
-                <attribute name="Main-Class" value="org.academiadecodigo.bootcamp.Main"/>
+                <attribute name="Main-Class" value="org.academiadecodigo.bootcamp.DevOops.Main"/>
             </manifest>
         </jar>
     </target>

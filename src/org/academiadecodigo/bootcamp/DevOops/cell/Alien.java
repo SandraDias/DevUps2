@@ -3,17 +3,25 @@ package org.academiadecodigo.bootcamp.DevOops.cell;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
 
+import java.util.LinkedList;
+
 public class Alien extends Cell {
 
 
     private Picture alien;
     private Picture fire;
+    private boolean isJalaps = false;
 
     public Alien(int row, int col, String picturePath) {
         super(row, col);
-        alien = new Picture(PADDING+col*CELL_SIZE,PADDING + row * CELL_SIZE, picturePath);
-        alien.draw();
-        fire = new Picture(PADDING+col*CELL_SIZE,PADDING + row * CELL_SIZE, "resources/fire.png");
+        if(isJalaps) {
+            alien = new Picture(PADDING + col * CELL_SIZE, PADDING + row * CELL_SIZE, "chili.png");
+            alien.draw();
+        }else{
+            alien = new Picture(PADDING + col * CELL_SIZE, PADDING + row * CELL_SIZE, picturePath);
+            alien.draw();
+        }
+        fire = new Picture(PADDING+col*CELL_SIZE,PADDING + row * CELL_SIZE, "fire.png");
 
     }
 
@@ -35,6 +43,7 @@ public class Alien extends Cell {
     public void deleteAlien() {
         this.alien.delete();
     }
+
 
 
 }

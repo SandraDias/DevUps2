@@ -1,6 +1,11 @@
 package org.academiadecodigo.bootcamp.DevOops.cell;
 
+import org.academiadecodigo.bootcamp.DevOops.Game;
 import org.academiadecodigo.bootcamp.DevOops.Grid;
+import org.academiadecodigo.simplegraphics.keyboard.Keyboard;
+import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
+import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
+import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
 
 import java.util.LinkedList;
 
@@ -8,49 +13,42 @@ public class AlienFactory {
 
 
     private static LinkedList<Alien> alienLinkedList;
-    private static int lastRow;
 
     public static Alien getNewAst(Grid grid) {
-        lastRow = grid.randAstPosRow();
+        int randRow = grid.randAstPosRow();
+        int lastRow = randRow;
+        int randCol = grid.randAstPosCol();
+
+        for (Alien alien : alienLinkedList) {
+            while (lastRow == alien.getRow()) {
+                randRow = grid.randAstPosRow();
+                lastRow = randRow;
+
+            }
+        }
+
         Alien ast = new Alien(lastRow, grid.randAstPosCol(), DiferentAliens.pickAlien());
 
         return ast;
+
     }
 
-    private static void verify(Grid grid, Alien ali,LinkedList<Alien> aliens) {
-        int randRow;
-        int randCol = grid.randAstPosCol();
+    public static LinkedList<Alien> getAllAst(Grid grid, int enemiesPerRow) {
+        alienLinkedList = new LinkedList<>();
 
-        for (Alien alien : aliens) {
-                while (alien.getRow() == ali.getRow()) {
-                    randRow = grid.randAstPosRow();
-                    ali.setRow(randRow);
-                    System.out.println(randRow);
-
-                }
-            }
-
-
+        for (int i = 0; i < enemiesPerRow; i++) {
+            alienLinkedList.add(AlienFactory.getNewAst(grid));
         }
 
 
+        return alienLinkedList;
 
-        public static LinkedList<Alien> getAllAst (Grid grid,int enemiesPerRow){
-            alienLinkedList = new LinkedList<>();
-
-            for (int i = 0; i < enemiesPerRow; i++) {
-                Alien alien = getNewAst(grid);
-                Alien lastAlien = alien;
-                verify(grid,lastAlien,alienLinkedList);
-                alienLinkedList.add(lastAlien);
-            }
-
-
-
-            return alienLinkedList;
-
-
-        }
 
     }
+}
+
+
+
+
+
 

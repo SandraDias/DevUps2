@@ -20,7 +20,6 @@ public class Cell {
         this.col = col;
 
         rectangle = new Rectangle(PADDING + col * CELL_SIZE, PADDING + row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-        //rectangle.draw();
 
     }
 
@@ -30,26 +29,6 @@ public class Cell {
 
     public Rectangle getRectangle() {
         return rectangle;
-    }
-
-
-    public void paint() {
-        if (!isPainted) {
-
-            isPainted = true;
-            //this.rectangle.fill();
-            this.rectangle.setColor(Color.MAGENTA);
-        }
-    }
-
-    public void unpaint() {
-
-        if (isPainted) {
-
-            isPainted = false;
-            this.rectangle.setColor(Color.BLACK);
-            this.rectangle.draw();
-        }
     }
 
 

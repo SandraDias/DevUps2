@@ -1,5 +1,6 @@
 package org.academiadecodigo.bootcamp.DevOops;
 
+import org.academiadecodigo.bootcamp.DevOops.cell.DiferentAliens;
 import org.academiadecodigo.simplegraphics.keyboard.Keyboard;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
@@ -42,6 +43,12 @@ public class KeyboardInput implements KeyboardHandler {
         space.setKey(KeyboardEvent.KEY_SPACE);
         k1.addEventListener(space);
 
+        // SPECIAL FEATURE
+        KeyboardEvent j = new KeyboardEvent();
+        j.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        j.setKey(KeyboardEvent.KEY_J);
+        k1.addEventListener(j);
+
 
     }
 
@@ -63,6 +70,10 @@ public class KeyboardInput implements KeyboardHandler {
         }
         if (keyboardEvent.getKey() == KeyboardEvent.KEY_SPACE) {
             game.setGameStart(true);
+        }
+
+        if (keyboardEvent.getKey() == KeyboardEvent.KEY_J) {
+            DiferentAliens.setNumber(4);
         }
 
 

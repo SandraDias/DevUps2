@@ -1,8 +1,10 @@
 package org.academiadecodigo.bootcamp.DevOops.cell;
 
 import org.academiadecodigo.bootcamp.DevOops.Game;
+import org.academiadecodigo.bootcamp.DevOops.SoundPlayer;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
 
+import java.io.IOException;
 import java.util.LinkedList;
 
 public class Player extends Cell {
@@ -11,26 +13,28 @@ public class Player extends Cell {
     private int currentRow;
     private int life;
     private boolean isOutOfLives = false;
+    private boolean isPlayerHit = false;
     private int movedRow;
     private int movedCol;
     private Picture lifePicture1;
     private Picture lifePicture2;
     private Picture lifePicture3;
     Picture picturePlayer1;
+    private SoundPlayer soundPlayer = new SoundPlayer();
 
 
     public Player(int row, int life) {
         super(row, 1);
         super.getRectangle();
-        picturePlayer1 = new Picture(PADDING + CELL_SIZE, PADDING + row * CELL_SIZE, "resources/aust1.png");
+        picturePlayer1 = new Picture(PADDING + CELL_SIZE, PADDING + row * CELL_SIZE, "aust1.png");
         picturePlayer1.draw();
 
         this.life = life;
-        this.lifePicture1= new Picture(Cell.PADDING,Cell.PADDING, "resources/life.png");
+        this.lifePicture1= new Picture(Cell.PADDING,Cell.PADDING, "life.png");
         lifePicture1.draw();
-        this.lifePicture2= new Picture(Cell.PADDING+ Cell.CELL_SIZE,Cell.PADDING, "resources/life.png");
+        this.lifePicture2= new Picture(Cell.PADDING+ Cell.CELL_SIZE,Cell.PADDING, "life.png");
         lifePicture2.draw();
-        this.lifePicture3= new Picture(Cell.PADDING+(2*Cell.CELL_SIZE),Cell.PADDING, "resources/life.png");
+        this.lifePicture3= new Picture(Cell.PADDING+(2*Cell.CELL_SIZE),Cell.PADDING, "life.png");
         lifePicture3.draw();
 
 
@@ -67,35 +71,40 @@ public class Player extends Cell {
 
     }
 
-    public void checkCollisionCol(LinkedList<Alien> alienLinkedList,int LeftOrRight){
+    public void checkCollisionCol(LinkedList<Alien> alienLinkedList,int LeftOrRight) {
 
         currentCol = super.getCol();
         currentRow = super.getRow();
-        int nextCol = super.getCol()+LeftOrRight;
+        int nextCol = super.getCol() + LeftOrRight;
         int checkCol;
         checkCol = nextCol;
 
         for (Alien ast : alienLinkedList) {
             if (this.currentRow == ast.getRow() && checkCol == ast.getCol()) {
-                life = life - 1;
-                if (life == 1) {
-                    lifePicture3.delete();
-                }
-                if (life == 0) {
-                    lifePicture2.delete();
-                }
-                ast.deleteAlien();
-                Picture fire = new Picture(10 + ast.getCol() * 40, 10 + ast.getRow() * 40, "resources/fire.png");
-                fire.draw();
                 try {
-                    Thread.sleep(150);
-                } catch (InterruptedException e) {
+                    soundPlayer.explosion();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
-                fire.delete();
+                life = life - 1;
+                    if (life == 1) {
+                        lifePicture3.delete();
+                    }
+                    if (life == 0) {
+                        lifePicture2.delete();
+                    }
+                    ast.deleteAlien();
+                    Picture fire = new Picture(10 + ast.getCol() * 40, 10 + ast.getRow() * 40, "fire.png");
+                    fire.draw();
+                    try {
+                        Thread.sleep(150);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    fire.delete();
 
 
-            }
+                }
 
         }
     }
@@ -139,26 +148,32 @@ public class Player extends Cell {
 
         for (Alien ast : alienLinkedList) {
             if (this.currentRow == ast.getRow() && currentCol == ast.getCol() || this.currentRow  == ast.getRow() && currentCol + 1 == ast.getCol()) {
-                life = life - 1;
-                if (life == 1){
-                    lifePicture3.delete();
-                }
-                if (life == 0){
-                    lifePicture2.delete();
-                }
-                ast.deleteAlien();
-                Picture fire = new Picture(10+ast.getCol()*40,10+ast.getRow()*40, "resources/fire.png");
-                fire.draw();
                 try {
-                    Thread.sleep(150);
-                } catch (InterruptedException e) {
+                    soundPlayer.explosion();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
-                fire.delete();
+                life = life - 1;
+                    if (life == 1) {
+                        lifePicture3.delete();
+                    }
+                    if (life == 0) {
+                        lifePicture2.delete();
+                    }
+                    ast.deleteAlien();
+                    Picture fire = new Picture(10 + ast.getCol() * 40, 10 + ast.getRow() * 40, "fire.png");
+                    fire.draw();
+                    try {
+                        Thread.sleep(150);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    fire.delete();
 
-
-                return;
+                }
             }
+
+
             /*if (this.currentRow == ast.getRow() && currentCol == ast.getCol()) {
                 ast.deleteAlien();
                 Picture fire = new Picture(10+ast.getCol()*40,10+ast.getRow()*40, "resources/fire.png");
@@ -179,7 +194,7 @@ public class Player extends Cell {
                 return;
             }*/
         }
-    }
+
 
 
     public int getLife() {
@@ -196,5 +211,13 @@ public class Player extends Cell {
 
     public void setLife(int life) {
         this.life = life;
+    }
+
+    public boolean isPlayerHit() {
+        return isPlayerHit;
+    }
+
+    public void setPlayerHit(boolean playerHit) {
+        isPlayerHit = playerHit;
     }
 }
